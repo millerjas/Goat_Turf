@@ -21,14 +21,18 @@ function calculatePrice(sport, startTime, endTime) {
 
   if (durationMinutes <= 0) return null; // invalid
 
+  const basePricePerHour = sport === 'football' 
+    ? Number(process.env.PRICE_PER_HOUR_FOOTBALL) || 1000 
+    : Number(process.env.PRICE_PER_HOUR_CRICKET) || 1000;
+
   let totalPrice = 0;
   for (let m = startMinutes; m < endMinutes; m++) {
     const h = Math.floor(m / 60);
-    // 6 AM (6) to 6 PM (18): ₹500/hr, otherwise ₹1000/hr
+    // 6 AM (6) to 6 PM (18): 50% discount
     if (h >= 6 && h < 18) {
-      totalPrice += 500 / 60;
+      totalPrice += (basePricePerHour / 2) / 60;
     } else {
-      totalPrice += 1000 / 60;
+      totalPrice += basePricePerHour / 60;
     }
   }
 

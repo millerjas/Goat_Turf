@@ -18,20 +18,12 @@ const allowedOrigins = [
   'http://127.0.0.1:5500',
   'http://localhost:3000',
 ];
-// Add the deployed frontend URL from env
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, '')); // trim trailing slash
-}
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(null, true); // Allow all origins for now; tighten in production
+    // Dynamically allow all origins to make the application robust across all platforms
+    return callback(null, true);
   },
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
 }));
 app.use(express.json());

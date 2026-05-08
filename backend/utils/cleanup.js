@@ -7,8 +7,9 @@ const supabase = require('../config/supabase');
 
 async function cleanupPendingBookings() {
   try {
-    // Calculate the cutoff time: 0 seconds
-    const cutoff = new Date(Date.now()).toISOString();
+    // Calculate the cutoff time: 15 minutes ago
+    // Gives users 15 minutes to complete their Razorpay checkout
+    const cutoff = new Date(Date.now() - 15 * 60 * 1000).toISOString();
 
     const { data, error } = await supabase
       .from('bookings')
